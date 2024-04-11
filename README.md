@@ -1,2 +1,2 @@
 # ply-loader
-Loads PLY models
+Loads PLY models as a point cloud
