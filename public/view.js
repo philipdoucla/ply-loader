@@ -52,17 +52,20 @@ function loadPointCloudsFromFolder(loader) {
         .then(response => response.json())
         .then(files => {
             files.forEach(file => {
-                // Load each point cloud
-                loader.load(`models/${file}`, function (geometry) {
-                    const material = new THREE.PointsMaterial({
-                        size: 0.00001,
-                        vertexColors: THREE.VertexColors,
-                    });
-                
-                    const points = new THREE.Points(geometry, material);
-                    //points.scale.set(0.0025, 0.0025, 0.0025);
-                    scene.add(points);
-                });    
+                // Check if the file has a .ply extension before loading
+                if (file.endsWith('.ply')) {
+                    loader.load(`models/${file}`, function (geometry) {
+                        const material = new THREE.PointsMaterial({
+                            size: 0.00001,
+                            vertexColors: THREE.VertexColors,
+                        });
+                    
+                        const points = new THREE.Points(geometry, material);
+                        scene.add(points);
+                    }); 
+                } else {
+                    console.log(`Skipped loading non-PLY file: ${file}`);
+                }   
             });
         })
         .catch(error => console.error('Error loading point clouds:', error));
